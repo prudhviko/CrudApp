@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
 import {
   getItems,
   createItem,
@@ -30,8 +29,13 @@ const itemsSlice = createSlice({
     items: [],
     status: "idle",
     error: null,
+    searchQuery: "", // New state for search query
   },
-  reducers: {},
+  reducers: {
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload; // Update search query
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchItems.pending, (state) => {
@@ -60,4 +64,5 @@ const itemsSlice = createSlice({
   },
 });
 
+export const { setSearchQuery } = itemsSlice.actions; // Export the new action
 export default itemsSlice.reducer;

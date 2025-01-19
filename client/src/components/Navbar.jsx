@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addItem } from "../features/itemsSlice";
+import { addItem, setSearchQuery } from "../features/itemsSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -21,6 +20,10 @@ const Navbar = () => {
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleSearchChange = (e) => {
+    dispatch(setSearchQuery(e.target.value)); // Update search query in Redux
   };
 
   return (
@@ -37,6 +40,7 @@ const Navbar = () => {
             type="text"
             placeholder="Search..."
             className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            onChange={handleSearchChange} // Dispatch the search query
           />
         </div>
 
@@ -63,53 +67,55 @@ const Navbar = () => {
               </button>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="title"
-                className="block text-gray-700 font-medium"
-              >
-                Title
-              </label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter title"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="description"
-                className="block text-gray-700 font-medium"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows="4"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Enter description"
-              ></textarea>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label
+                  htmlFor="title"
+                  className="block text-gray-700 font-medium"
+                >
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter title"
+                />
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="description"
+                  className="block text-gray-700 font-medium"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows="4"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Enter description"
+                ></textarea>
+              </div>
 
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={toggleModal}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                onClick={handleSubmit}
-              >
-                Save
-              </button>
-            </div>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={toggleModal}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  type="submit"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
